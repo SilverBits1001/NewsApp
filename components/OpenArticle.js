@@ -1,14 +1,16 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { WebView } from 'react-native-webview';
 
-export default function OpenArticle({route, navigation}) {
-    const {   selectedArticle } = route.params;
-
+export default function OpenArticle({ route, navigation }) {
+    const { article } = route.params;
+console.log(article);
     return (
-        <View style={{height: 500, backgroundColor:'red'}}>
-            <Text>{selectedArticle.title}</Text>
-            <Text>{selectedArticle.content}</Text>
-        </View>
+        <WebView
+        source={{ uri: article }}
+        originWhitelist={['https://*', 'git://*']}
+      />
+
     )
 }
 

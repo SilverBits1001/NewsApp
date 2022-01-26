@@ -4,15 +4,15 @@ import { FlatList, LogBox, StyleSheet, Text, TouchableOpacity, View } from 'reac
 import { Card } from 'react-native-elements'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Linking } from 'react-native';
-
 import theme from '../styles/theme.style'
 import FetchApi from './FetchApi'
 import test from './test'
 
-const RenderFirstTopStory = ({ articles, openURL }) => {
+const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
+    console.log(articles[0].url)
     return (
         <TouchableOpacity
-            onPress={() => openURL(articles[0].url)}
+            onPress={() => navigation.navigate('Article', { article: articles[0].url })}
         >
             <Card containerStyle={styles.card}>
                 <Card.Image
@@ -23,7 +23,6 @@ const RenderFirstTopStory = ({ articles, openURL }) => {
                 />
                 <Card.Title style={styles.cardSubtitle}>{articles[0].source.name}</Card.Title>
                 <Card.Title style={styles.cardTitle}>{articles[0].title}</Card.Title>
-
                 <Card.Divider color='grey' />
                 <Card.FeaturedSubtitle style={styles.cardBottom}>{articles[0].author}</Card.FeaturedSubtitle>
             </Card>
@@ -31,7 +30,7 @@ const RenderFirstTopStory = ({ articles, openURL }) => {
     )
 }
 
-const RenderMoreTopStories = ({ articles, openURL }) => {
+const RenderMoreTopStories = ({navigation, articles, openURL }) => {
 
     const renderTopMore = ({ item, index }) => {
         console.log(index);
@@ -43,7 +42,9 @@ const RenderMoreTopStories = ({ articles, openURL }) => {
         }
         return (
             <TouchableOpacity
-                onPress={() => openURL(item.url)}
+                onPress={() => navigation.navigate('Article', {
+                    article: item.url
+                })}
             >
                 <Card containerStyle={styles.cardList}>
                     <Card.Image
@@ -71,6 +72,7 @@ const RenderMoreTopStories = ({ articles, openURL }) => {
                 end={[1, 0.5]}
                 colors={['transparent', 'black']}
                 style={styles.cardListGradient}
+                pointerEvents='none'
             />
             <FlatList
                 horizontal={true}
@@ -92,7 +94,7 @@ export default function TopStories({ navigation }) {
     const APIKey = '60c77ffbffaf4bf28f68800ef8c70d36'
     const ApiUrl = 'https://newsapi.org/v2/top-headlines?language=en'
     const axios = require('axios');
-    
+
     const openURL = (url) => {
         Linking.openURL(url).catch((err) => console.error('An error occurred', err));
     }
@@ -110,7 +112,7 @@ export default function TopStories({ navigation }) {
             })
             setArticles(response.data.articles)
             setLoaded(true)
-            console.log(articles);
+            console.log('&&', articles);
             //  console.log(response);
         } catch (error) {
             console.error(error);
@@ -136,7 +138,7 @@ export default function TopStories({ navigation }) {
         <View style={{ marginBottom: 75 }}>
             <Text style={styles.header}>Top Stories</Text>
             <RenderFirstTopStory navigation={navigation} articles={articles} openURL={openURL} />
-            <RenderMoreTopStories articles={articles} openURL={openURL} />
+            <RenderMoreTopStories navigation={navigation} articles={articles} openURL={openURL} />
 
         </View>
     )

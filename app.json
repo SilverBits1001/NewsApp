@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "food-delivery",
-    "slug": "food-delivery",
+    "name": "News-App",
+    "slug": "News-App",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -22,7 +22,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#fff"
       }
     },
     "web": {

@@ -9,6 +9,7 @@ import OpenArticle from './components/OpenArticle';
 
 import theme from './styles/theme.style';
 import Home from './components/Home';
+import themeStyle from './styles/theme.style';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -65,10 +66,22 @@ export default function App() {
           initialRoute='Home'
           screenOptions={{
             headerShown: false,
-            backgroundColor: 'green'
+            backgroundColor: 'green',
+            headerStyle: {
+              backgroundColor: themeStyle.HEADER_BACKGROUND_COLOR,
+             
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              padding:150
+            },
+            
           }}>
           <Stack.Screen name='Home' component={MyTabs} />
-          <Stack.Screen name='Article' component={OpenArticle} />
+          <Stack.Screen name='Article' component={OpenArticle} options={{
+            headerShown:true
+          }} />
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaView>
