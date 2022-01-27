@@ -9,7 +9,7 @@ import FetchApi from './FetchApi'
 import test from './test'
 
 const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
-    console.log(articles[0].url)
+
     return (
         <TouchableOpacity
             onPress={() => navigation.navigate('Article', { article: articles[0].url })}
@@ -30,7 +30,7 @@ const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
     )
 }
 
-const RenderMoreTopStories = ({navigation, articles, openURL }) => {
+const RenderMoreTopStories = ({ navigation, articles, openURL }) => {
 
     const renderTopMore = ({ item, index }) => {
         console.log(index);
@@ -89,38 +89,54 @@ const RenderMoreTopStories = ({navigation, articles, openURL }) => {
 
 export default function TopStories({ navigation }) {
 
-    const [articles, setArticles] = useState({})
+    const params = {
+        sources: '',
+        q: 'trump',
+        category: '',
+        language: '',
+        country: ''
+    }
+
+
+    const [topArticles, setTopArticles] = useState({})
+    const [topSportsArticles, setTopSportsArticles] = useState({})
     const [loaded, setLoaded] = useState(false)
     const APIKey = '60c77ffbffaf4bf28f68800ef8c70d36'
-    const ApiUrl = 'https://newsapi.org/v2/top-headlines?language=en'
+
+    const ApiUrl = 'https://newsapi.org/v2/top-headlines'
     const axios = require('axios');
+
+
 
     const openURL = (url) => {
         Linking.openURL(url).catch((err) => console.error('An error occurred', err));
     }
 
-    async function fetchTopArticles() {
+    async function fetchTopArticles(params, setArticle) {
+        console.log(ApiUrl);
+
         try {
             const response = await axios.get(ApiUrl, {
                 headers: {
-                    params: {
-
-
-                    },
                     'X-Api-Key': APIKey
-                }
+                },
+                params: {
+                    ...params
+                },
             })
-            setArticles(response.data.articles)
+            setArticle(response.data.articles)
             setLoaded(true)
-            console.log('&&', articles);
-            //  console.log(response);
+            console.log(ApiUrl.toString());
+            console.log(response);
         } catch (error) {
             console.error(error);
         }
     }
     console.log('in fetchapi')
     useEffect(() => {
-        fetchTopArticles()
+        fetchTopArticles(params, setTopArticles)
+        fetchTopArticles({category:'sports'}, setTopSportsArticles) //components are rendering before fetch causing them to have empty values. need to change the way fetch checks if item is loaded
+
     }, [])
 
 
@@ -137,8 +153,11 @@ export default function TopStories({ navigation }) {
     return (
         <View style={{ marginBottom: 75 }}>
             <Text style={styles.header}>Top Stories</Text>
-            <RenderFirstTopStory navigation={navigation} articles={articles} openURL={openURL} />
-            <RenderMoreTopStories navigation={navigation} articles={articles} openURL={openURL} />
+            <RenderFirstTopStory navigation={navigation} articles={topArticles} openURL={openURL} />
+            <RenderMoreTopStories navigation={navigation} articles={topArticles} openURL={openURL} />
+            <Text style={styles.header}>Top Sports</Text>
+            <RenderFirstTopStory navigation={navigation} articles={topSportsArticles} openURL={openURL} />
+            <RenderMoreTopStories navigation={navigation} articles={topSportsArticles} openURL={openURL} />
 
         </View>
     )
