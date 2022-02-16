@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { FlatList, LogBox, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, LogBox, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Card } from 'react-native-elements'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Linking } from 'react-native';
@@ -8,8 +8,19 @@ import theme from '../styles/theme.style'
 import FetchApi from './FetchApi'
 import test from './test'
 
-const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
 
+const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
+    console.log(articles, 'this is the loaded');
+    if (articles === undefined) {
+        return (
+            <View>
+                <ActivityIndicator
+                    size={'large'}
+                    color={theme.SECONDARY_COLOR}
+                    style={{ margin: 50 }} />
+            </View>
+        )
+    }
     return (
         <TouchableOpacity
             onPress={() => navigation.navigate('Article', { article: articles[0].url })}
@@ -25,13 +36,23 @@ const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
                 <Card.Title style={styles.cardTitle}>{articles[0].title}</Card.Title>
                 <Card.Divider color='grey' />
                 <Card.FeaturedSubtitle style={styles.cardBottom}>{articles[0].author}</Card.FeaturedSubtitle>
+
             </Card>
         </TouchableOpacity>
     )
 }
 
 const RenderMoreTopStories = ({ navigation, articles, openURL }) => {
-
+    if (articles === undefined) {
+        return (
+            <View>
+                <ActivityIndicator
+                    size={'large'}
+                    color={theme.SECONDARY_COLOR}
+                    style={{ margin: 50 }} />
+            </View>
+        )
+    }
     const renderTopMore = ({ item, index }) => {
         console.log(index);
         if (index === 0) {
@@ -47,19 +68,30 @@ const RenderMoreTopStories = ({ navigation, articles, openURL }) => {
                 })}
             >
                 <Card containerStyle={styles.cardList}>
-                    <Card.Image
-                        style={styles.cardListImage}
-                        source={{
-                            uri: item.urlToImage
-                        }}
-                    />
-                    <Card.Divider />
-                    <Card.Title titleNumberOfLines={1} style={styles.cardListTitle}>{item.title}</Card.Title>
-                    <View style={{}}>
-                        <Card.Divider color='grey' />
-                        <Card.FeaturedSubtitle style={styles.cardBottom}>{item.author}</Card.FeaturedSubtitle>
+                    {item.urlToImage === null ? <View /> : (
+                        <Card.Image
+                            style={styles.cardListImage}
+                            source={{
+                                uri: item.urlToImage
+                            }}
+                        />
+                    )}
+                    <View style={{ justifyContent: 'space-between' }} >
+                        <Card.Title numberOfLines={5} style={styles.cardListTitle}>{item.title}</Card.Title>
+                        <View>
+                            <Card.Divider color='grey' />
+                            {item.author === null ? (
+                                <Card.FeaturedSubtitle style={styles.cardBottom}>Unknown Source</Card.FeaturedSubtitle>
+                            ) :
+                                (
+                                    <Card.FeaturedSubtitle numberOfLines={2} style={styles.cardBottom}>{item.author}</Card.FeaturedSubtitle>
+                                )}
+                        </View>
                     </View>
                 </Card>
+
+
+
             </TouchableOpacity>
         )
     }
@@ -91,15 +123,17 @@ export default function TopStories({ navigation }) {
 
     const params = {
         sources: '',
-        q: 'trump',
+        q: '',
         category: '',
-        language: '',
+        language: 'en',
         country: ''
     }
-
+    let genres = ['general', 'sports', 'science', 'health', 'business', 'technology', 'entertainment' ]
 
     const [topArticles, setTopArticles] = useState({})
     const [topSportsArticles, setTopSportsArticles] = useState({})
+    const [topScienceArticles, setTopScienceArticles] = useState({})
+
     const [loaded, setLoaded] = useState(false)
     const APIKey = '60c77ffbffaf4bf28f68800ef8c70d36'
 
@@ -112,7 +146,7 @@ export default function TopStories({ navigation }) {
         Linking.openURL(url).catch((err) => console.error('An error occurred', err));
     }
 
-    async function fetchTopArticles(params, setArticle) {
+    async function fetchTopArticles(params, category) {
         console.log(ApiUrl);
 
         try {
@@ -124,43 +158,52 @@ export default function TopStories({ navigation }) {
                     ...params
                 },
             })
-            setArticle(response.data.articles)
+            setTopArticles(prevArticleObj => {
+                return {
+                    ...prevArticleObj,
+                    [category]: response.data.articles
+                }
+            })
             setLoaded(true)
-            console.log(ApiUrl.toString());
-            console.log(response);
+            //   console.log(ApiUrl.toString());
+
         } catch (error) {
             console.error(error);
         }
     }
     console.log('in fetchapi')
     useEffect(() => {
-        fetchTopArticles(params, setTopArticles)
-        fetchTopArticles({category:'sports'}, setTopSportsArticles) //components are rendering before fetch causing them to have empty values. need to change the way fetch checks if item is loaded
+
+        genres.map(genre => {
+            fetchTopArticles({ category: genre, language: 'en' }, genre)
+        })
 
     }, [])
 
 
-    if (!loaded) {
-        return (
+    console.log('scienceeee', topArticles);
 
-            <View>
-                <Text style={styles.header}>Top Stories</Text>
-            </View>
 
-        )
-    }
 
     return (
-        <View style={{ marginBottom: 75 }}>
-            <Text style={styles.header}>Top Stories</Text>
-            <RenderFirstTopStory navigation={navigation} articles={topArticles} openURL={openURL} />
-            <RenderMoreTopStories navigation={navigation} articles={topArticles} openURL={openURL} />
-            <Text style={styles.header}>Top Sports</Text>
-            <RenderFirstTopStory navigation={navigation} articles={topSportsArticles} openURL={openURL} />
-            <RenderMoreTopStories navigation={navigation} articles={topSportsArticles} openURL={openURL} />
 
+
+        <View style={{ marginBottom: 75 }}>
+            {genres.map((genre, index) => {
+                return (
+                    <View key={index}>
+                        <Text style={styles.header}>{genre.charAt(0).toUpperCase() + genre.slice(1)}</Text>
+                        <RenderFirstTopStory navigation={navigation} articles={topArticles[genre]} openURL={openURL} />
+                        <RenderMoreTopStories navigation={navigation} articles={topArticles[genre]} openURL={openURL} />
+                    </View>
+                )
+            })}
         </View>
     )
+
+
+
+
 }
 
 
@@ -202,6 +245,7 @@ const styles = StyleSheet.create({
         color: theme.SECONDARY_COLOR,
         textAlign: 'left',
         marginLeft: 15,
+        marginTop: 10,
         fontSize: theme.FONT_SIZE_SMALL,
         fontWeight: theme.FONT_WEIGHT_HEAVY,
         marginVertical: 0,
@@ -223,14 +267,16 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 8,
     },
     cardListTitle: {
-        height: 120,
+        height: 110,
         color: 'white',
         textAlign: 'left',
-        marginLeft: 15,
+        paddingHorizontal: 15,
+        marginTop: 20,
         fontSize: theme.FONT_SIZE_SMALL,
         fontWeight: theme.FONT_WEIGHT_MEDIUM
     },
     cardListSubtitle: {
+        height: '10%',
         color: theme.SECONDARY_COLOR,
         textAlign: 'left',
         marginLeft: 15,
@@ -241,7 +287,7 @@ const styles = StyleSheet.create({
     cardBottom: {
         color: theme.SECONDARY_COLOR,
         textAlign: 'left',
-        marginLeft: 15,
+        paddingHorizontal: 15,
         fontSize: theme.FONT_SIZE_TINY,
         fontWeight: theme.FONT_WEIGHT_HEAVY,
         marginBottom: 10

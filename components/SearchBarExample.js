@@ -3,7 +3,7 @@ import { TextInput } from 'react-native'
 import { StyleSheet, Text, View } from 'react-native'
 import { Icon, Button } from 'react-native-elements'
 
-export default function SearchBar() {
+export default function SearchBarExample() {
     const [userSearch, setUserSearch] = useState('')
     return (
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>

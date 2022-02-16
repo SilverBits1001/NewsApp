@@ -10,6 +10,7 @@ import OpenArticle from './components/OpenArticle';
 import theme from './styles/theme.style';
 import Home from './components/Home';
 import themeStyle from './styles/theme.style';
+import Search from './components/Search';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -49,8 +50,9 @@ function MyTabs() {
 
       })}
     >
+        <Tab.Screen name="Explore" component={Search} />
       <Tab.Screen name="Trending" component={Home} />
-      <Tab.Screen name="Explore" component={Home} />
+    
       <Tab.Screen name="Account" component={Home} />
     </Tab.Navigator>
   )
