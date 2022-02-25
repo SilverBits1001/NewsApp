@@ -3,34 +3,50 @@ import { StyleSheet, Text, View } from 'react-native'
 
 
 export default function FetchApi() {
-    const [articles, setArticles] = useState({})
+    const [topArticles, setTopArticles] = useState({})
     const [loaded, setLoaded] = useState(false)
-    const APIKey = 'cjXOu_1fk4Q8aVD7otETS_wKjIYBW3Z-qZcvDlk7foM'
+    const APIKey = '60c77ffbffaf4bf28f68800ef8c70d36'
+    const ApiUrl = 'https://newsapi.org/v2/top-headlines'
+
     const axios = require('axios');
 
-    async function articleHighlights() {
+    const params = {
+        sources: '',
+        q: '',
+        category: '',
+        language: 'en',
+        country: ''
+    }
+
+
+
+
+
+
+    async function fetchTopArticles(params) {
+        console.log('apiurlA ', ApiUrl);
+
         try {
-            const response = await axios.get('https://newsapi.org/v2/top-headlines?country=us&apiKey=60c77ffbffaf4bf28f68800ef8c70d36', {
-                params: { lang: 'en', page: '1', page_size: '25', },
+            const response = await axios.get(ApiUrl, {
                 headers: {
-                    'x-api-key': APIKey
-                }
+                    'X-Api-Key': APIKey
+                },
+                params: {
+                    ...params
+                },
             })
-            setArticles(response.data)
+            setTopArticles(response.data.articles)
             setLoaded(true)
-            console.log(articles);
-            //  console.log(response);
+            //   console.log(ApiUrl.toString());
+
         } catch (error) {
             console.error(error);
         }
     }
-    console.log('in fetchapi')
-    useEffect(() => {
-        articleHighlights()
-    }, [])
 
-    return(
-        articles
+
+    return (
+        fetchTopArticles(params)
     )
 }
 

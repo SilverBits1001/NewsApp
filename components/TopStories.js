@@ -7,7 +7,7 @@ import { Linking } from 'react-native';
 import theme from '../styles/theme.style'
 import FetchApi from './FetchApi'
 import test from './test'
-
+import tempDB from './tempDB';
 
 const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
     console.log(articles, 'this is the loaded');
@@ -35,7 +35,7 @@ const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
                 <Card.Title style={styles.cardSubtitle}>{articles[0].source.name}</Card.Title>
                 <Card.Title style={styles.cardTitle}>{articles[0].title}</Card.Title>
                 <Card.Divider color='grey' />
-                <Card.FeaturedSubtitle style={styles.cardBottom}>{articles[0].author}</Card.FeaturedSubtitle>
+                <Card.FeaturedSubtitle style={styles.cardBottom} numberOfLines={2}>{articles[0].author}</Card.FeaturedSubtitle>
 
             </Card>
         </TouchableOpacity>
@@ -54,7 +54,6 @@ const RenderMoreTopStories = ({ navigation, articles, openURL }) => {
         )
     }
     const renderTopMore = ({ item, index }) => {
-        console.log(index);
         if (index === 0) {
             console.log('^^^', item);
             return (
@@ -140,14 +139,12 @@ export default function TopStories({ navigation }) {
     const ApiUrl = 'https://newsapi.org/v2/top-headlines'
     const axios = require('axios');
 
-
-
     const openURL = (url) => {
         Linking.openURL(url).catch((err) => console.error('An error occurred', err));
     }
 
     async function fetchTopArticles(params, category) {
-        console.log(ApiUrl);
+        console.log('apiurlA ', ApiUrl);
 
         try {
             const response = await axios.get(ApiUrl, {
@@ -172,13 +169,13 @@ export default function TopStories({ navigation }) {
         }
     }
     console.log('in fetchapi')
-    useEffect(() => {
+/*     useEffect(() => {
 
         genres.map(genre => {
             fetchTopArticles({ category: genre, language: 'en' }, genre)
         })
 
-    }, [])
+    }, []) */
 
 
     console.log('scienceeee', topArticles);
@@ -193,8 +190,8 @@ export default function TopStories({ navigation }) {
                 return (
                     <View key={index}>
                         <Text style={styles.header}>{genre.charAt(0).toUpperCase() + genre.slice(1)}</Text>
-                        <RenderFirstTopStory navigation={navigation} articles={topArticles[genre]} openURL={openURL} />
-                        <RenderMoreTopStories navigation={navigation} articles={topArticles[genre]} openURL={openURL} />
+                        <RenderFirstTopStory navigation={navigation} articles={tempDB[genre]} openURL={openURL} />
+                        <RenderMoreTopStories navigation={navigation} articles={tempDB[genre]} openURL={openURL} />
                     </View>
                 )
             })}
