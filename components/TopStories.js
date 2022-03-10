@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { ActivityIndicator, FlatList, LogBox, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, LogBox, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Card } from 'react-native-elements'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Linking } from 'react-native';
@@ -8,6 +8,8 @@ import theme from '../styles/theme.style'
 import FetchApi from './FetchApi'
 import test from './test'
 import tempDB from './tempDB';
+
+
 
 const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
     console.log(articles, 'this is the loaded');
@@ -127,7 +129,7 @@ export default function TopStories({ navigation }) {
         language: 'en',
         country: ''
     }
-    let genres = ['general', 'sports', 'science', 'health', 'business', 'technology', 'entertainment' ]
+    let genres = ['general', 'sports', 'science', 'health', 'business', 'technology', 'entertainment']
 
     const [topArticles, setTopArticles] = useState({})
     const [topSportsArticles, setTopSportsArticles] = useState({})
@@ -169,13 +171,13 @@ export default function TopStories({ navigation }) {
         }
     }
     console.log('in fetchapi')
-/*     useEffect(() => {
+    useEffect(() => {
 
         genres.map(genre => {
-            fetchTopArticles({ category: genre, language: 'en' }, genre)
+            fetchTopArticles({ category: genre, language: 'en', pageSize:50 }, genre)
         })
 
-    }, []) */
+    }, [])
 
 
     console.log('scienceeee', topArticles);
@@ -185,17 +187,17 @@ export default function TopStories({ navigation }) {
     return (
 
 
-        <View style={{ marginBottom: 75 }}>
+        <ScrollView style={{ marginBottom: 75 }}>
             {genres.map((genre, index) => {
                 return (
                     <View key={index}>
                         <Text style={styles.header}>{genre.charAt(0).toUpperCase() + genre.slice(1)}</Text>
-                        <RenderFirstTopStory navigation={navigation} articles={tempDB[genre]} openURL={openURL} />
-                        <RenderMoreTopStories navigation={navigation} articles={tempDB[genre]} openURL={openURL} />
+                        <RenderFirstTopStory navigation={navigation} articles={topArticles[genre]} />
+                        <RenderMoreTopStories navigation={navigation} articles={topArticles[genre]} />
                     </View>
                 )
             })}
-        </View>
+        </ScrollView>
     )
 
 

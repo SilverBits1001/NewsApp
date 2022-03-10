@@ -11,6 +11,7 @@ import theme from './styles/theme.style';
 import Home from './components/Home';
 import themeStyle from './styles/theme.style';
 import Search from './components/Search';
+// import SwipeableTest from './components/SwipeableTest'
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,8 +30,8 @@ function MyTabs() {
               : 'trending-up-outline';
           } else if (route.name === 'Explore') {
             iconName = focused ? 'search' : 'search-outline';
-          } else if (route.name === 'Account') {
-            iconName = focused ? 'person' : 'person-outline';
+          } else if (route.name === 'Bookmarked') {
+            iconName = focused ? 'bookmark' : 'bookmark-outline';
           }
 
           return <Icon type='ionicon' name={iconName} size={size} color={color} />;
@@ -43,17 +44,16 @@ function MyTabs() {
           borderTopColor: 'transparent',
           position: 'absolute',
           height: 100,
-          paddingBottom: 60,
+          paddingBottom:55,
           paddingTop: 5,
           bottom: -50
         },
 
       })}
     >
-        <Tab.Screen name="Explore" component={Search} />
-      <Tab.Screen name="Trending" component={Home} />
-    
-      <Tab.Screen name="Account" component={Home} />
+     {/*   <Tab.Screen name="Trending" component={Home} />  */}
+      <Tab.Screen name="Explore" component={Search} />
+      <Tab.Screen name="Bookmarked" component={Search} />
     </Tab.Navigator>
   )
 }
@@ -71,18 +71,18 @@ export default function App() {
             backgroundColor: 'green',
             headerStyle: {
               backgroundColor: themeStyle.HEADER_BACKGROUND_COLOR,
-             
+
             },
             headerTintColor: '#fff',
             headerTitleStyle: {
               fontWeight: 'bold',
-              padding:150
+              padding: 150
             },
-            
+
           }}>
           <Stack.Screen name='Home' component={MyTabs} />
           <Stack.Screen name='Article' component={OpenArticle} options={{
-            headerShown:true
+            headerShown: true
           }} />
         </Stack.Navigator>
       </NavigationContainer>
