@@ -3,16 +3,10 @@ import { ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, TextI
 import { Icon, Button, Card } from 'react-native-elements'
 // import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-import NewsHighlights from './NewsHighlights'
-import FoodTypeList from './FoodTypeList'
-import APIFetch from './APIFetch'
 import theme from '../styles/theme.style'
 import TopStories from './TopStories'
-import tempDB from './tempDB'
 import themeStyle from '../styles/theme.style'
-import { ListItem } from 'react-native-elements/dist/list/ListItem'
 import { LayoutAnimation } from 'react-native'
-import SwipeableTest from './SwipeableTest'
 import RenderListItem from './RenderListItem'
 import { useDispatch, useSelector } from 'react-redux'
 import { add } from '../src/bookmarked/bookmarkedSlice'

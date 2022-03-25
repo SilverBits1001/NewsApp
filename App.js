@@ -7,7 +7,6 @@ import { Icon } from 'react-native-elements';
 import OpenArticle from './components/OpenArticle';
 import { store } from './src/app/store'
 import { Provider } from 'react-redux'
-
 import Bookmarked from './components/Bookmarked';
 import theme from './styles/theme.style';
 import Home from './components/Home';

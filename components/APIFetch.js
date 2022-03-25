@@ -75,7 +75,7 @@ export default function APIFetch() {
 
                     source={{ uri: item.urlToImage }}
                     resizemode='contain'
-                    style={styles.articleMedia} >
+                     >
 
 
                     <LinearGradient

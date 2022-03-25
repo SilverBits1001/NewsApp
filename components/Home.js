@@ -1,8 +1,5 @@
 import React, { useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
-import NewsHighlights from './NewsHighlights'
-import FoodTypeList from './FoodTypeList'
-import APIFetch from './APIFetch'
 import theme from '../styles/theme.style'
 import TopStories from './TopStories'
 import themeStyle from '../styles/theme.style'

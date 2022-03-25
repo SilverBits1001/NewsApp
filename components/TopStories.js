@@ -5,10 +5,7 @@ import { Card } from 'react-native-elements'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Linking } from 'react-native';
 import theme from '../styles/theme.style'
-import FetchApi from './FetchApi'
-import test from './test'
 import * as Haptics from 'expo-haptics';
-import tempDB from './tempDB';
 
 
 

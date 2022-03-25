@@ -1,4 +1,4 @@
-import { LayoutAnimation, StyleSheet, Text, View } from 'react-native'
+import {StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import themeStyle from '../styles/theme.style'
