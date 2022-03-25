@@ -1,10 +1,16 @@
 import React, { useEffect, useState, useRef, } from 'react'
-import { Animated, ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Platform, Share, UIManager, Vibration } from 'react-native'
+import { Animated, ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Platform, Share, UIManager, Vibration, LayoutAnimation } from 'react-native'
 import { Icon, Button, Card } from 'react-native-elements'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import themeStyle from '../styles/theme.style'
 import * as Haptics from 'expo-haptics';
+import { add, remove } from '../src/bookmarked/bookmarkedSlice'
+import { useDispatch, useSelector } from 'react-redux';
+
+
+
+
 
 async function shareArticle(item) {
     try {
@@ -81,7 +87,7 @@ const OpenPanelIcon = ({ iconFill, icon }) => {
 
 
 
-export default function SearchListItem({ item, navigation, bookmarkedList, setBookmarkedList }) {
+export default function RenderListItem({ item, navigation, bookmarkedList, setBookmarkedList }) {
     const swipeRef = React.useRef()
     const [bookmarkIconFill, setBookmarkIconfill] = useState(false);
     const monthNames = ["January", "February", "March", "April", "May", "June",
@@ -90,7 +96,11 @@ export default function SearchListItem({ item, navigation, bookmarkedList, setBo
     const date = new Date(item.publishedAt)
 
     const currentArticle = JSON.stringify(item)
-    const bookmarkFill = bookmarkedList.includes(currentArticle) ? true : false
+
+    const bookmark = useSelector((state) => state.bookmark.value)
+    const dispatch = useDispatch()
+    const bookmarkFill = bookmark.includes(currentArticle) ? true : false
+
 
 
 
@@ -102,7 +112,7 @@ export default function SearchListItem({ item, navigation, bookmarkedList, setBo
             <Swipeable
                 ref={swipeRef}
                 onSwipeableLeftOpen={() => {
-                    { bookmarkedList.includes(currentArticle) ? setBookmarkedList(bookmarkedList.filter(bookmarked => bookmarked !== currentArticle)) : setBookmarkedList([...bookmarkedList, currentArticle]) }
+                    { bookmarkFill ? dispatch(remove(item)) : dispatch(add(item)) }
                     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success)
                 }}
 
@@ -112,7 +122,7 @@ export default function SearchListItem({ item, navigation, bookmarkedList, setBo
                     shareArticle(item)
                 }}
                 onSwipeableOpen={() => setTimeout(() => {
-                    swipeRef.current.close()
+                    swipeRef.current && swipeRef.current.close()
                 }, 200)}
                 overshootFriction={8}
                 renderLeftActions={(progress, dragX) => LeftActions(progress, dragX, bookmarkFill)}

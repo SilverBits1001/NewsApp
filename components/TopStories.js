@@ -1,13 +1,35 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
-import { ActivityIndicator, FlatList, LogBox, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, FlatList, LogBox, ScrollView, Share, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { Card } from 'react-native-elements'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Linking } from 'react-native';
 import theme from '../styles/theme.style'
 import FetchApi from './FetchApi'
 import test from './test'
+import * as Haptics from 'expo-haptics';
 import tempDB from './tempDB';
+
+
+
+async function shareArticle(item) {
+    try {
+        const result = await Share.share({
+            url: item.url,
+        });
+        if (result.action === Share.sharedAction) {
+            if (result.activityType) {
+                // shared with activity type of result.activityType
+            } else {
+                // shared
+            }
+        } else if (result.action === Share.dismissedAction) {
+            // dismissed
+        }
+    } catch (error) {
+        alert(error.message);
+    }
+}
 
 
 
@@ -23,17 +45,23 @@ const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
             </View>
         )
     }
+
     return (
         <TouchableOpacity
-            onPress={() => navigation.navigate('Article', { article: articles[0].url })}
+            onLongPress={() => {
+                shareArticle(articles[0])
+                Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+            }}
         >
             <Card containerStyle={styles.card}>
-                <Card.Image
-                    style={styles.cardImage}
-                    source={{
-                        uri: articles[0].urlToImage
-                    }}
-                />
+                {articles[0].urlToImage === '' ? <View /> : (
+                    <Card.Image
+                        style={styles.cardImage}
+                        source={{
+                            uri: articles[0].urlToImage
+                        }}
+                    />
+                )}
                 <Card.Title style={styles.cardSubtitle}>{articles[0].source.name}</Card.Title>
                 <Card.Title style={styles.cardTitle}>{articles[0].title}</Card.Title>
                 <Card.Divider color='grey' />
@@ -67,9 +95,14 @@ const RenderMoreTopStories = ({ navigation, articles, openURL }) => {
                 onPress={() => navigation.navigate('Article', {
                     article: item.url
                 })}
+                onLongPress={() => {
+                    shareArticle(item)
+                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
+                }}
+
             >
                 <Card containerStyle={styles.cardList}>
-                    {item.urlToImage === null ? <View /> : (
+                    {item.urlToImage === '' ? <View /> : (
                         <Card.Image
                             style={styles.cardListImage}
                             source={{
@@ -174,7 +207,7 @@ export default function TopStories({ navigation }) {
     useEffect(() => {
 
         genres.map(genre => {
-            fetchTopArticles({ category: genre, language: 'en', pageSize:50 }, genre)
+            fetchTopArticles({ category: genre, language: 'en', pageSize: 50 }, genre)
         })
 
     }, [])

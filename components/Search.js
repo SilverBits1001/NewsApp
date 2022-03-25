@@ -13,7 +13,11 @@ import themeStyle from '../styles/theme.style'
 import { ListItem } from 'react-native-elements/dist/list/ListItem'
 import { LayoutAnimation } from 'react-native'
 import SwipeableTest from './SwipeableTest'
-import SearchListItem from './SearchListItem'
+import RenderListItem from './RenderListItem'
+import { useDispatch, useSelector } from 'react-redux'
+import { add } from '../src/bookmarked/bookmarkedSlice'
+
+
 
 if (
     Platform.OS === "android" &&
@@ -52,7 +56,7 @@ const UserSearchBar = ({ setSearchedArticles, searchedArticles, }) => {
     const axios = require('axios');
 
     async function fetchTopArticles(params) {
-      //  console.log('apiurlA ', ApiUrl);
+        //  console.log('apiurlA ', ApiUrl);
         try {
             const response = await axios.get(ApiUrl, {
                 headers: {
@@ -64,7 +68,7 @@ const UserSearchBar = ({ setSearchedArticles, searchedArticles, }) => {
             })
             setSearchedArticles(response.data.articles)
             setLoaded(true)
-          //  console.log(response.data);
+            //  console.log(response.data);
             //   console.log(ApiUrl.toString());
 
         } catch (error) {
@@ -130,24 +134,21 @@ const UserSearchBar = ({ setSearchedArticles, searchedArticles, }) => {
 
 const SearchedList = ({ searchedArticles, navigation }) => {
 
-    const [bookmarkedList, setBookmarkedList] = useState([]);
 
     const RenderUserSearch = ({ item }) => {
         if (item === undefined) {
             return <View />
         }
         return (
-            <SearchListItem
+            <RenderListItem
                 item={item}
                 navigation={navigation}
-                bookmarkedList={bookmarkedList}
-                setBookmarkedList={setBookmarkedList} />
+                />
         )
     }
 
     return (
         <View >
-            <Text style={{ color: 'green', fontSize: 30 }}>{bookmarkedList.length} bookmarked</Text>
             {
                 searchedArticles.length > 0 ?
                     <FlatList
@@ -167,10 +168,12 @@ const SearchedList = ({ searchedArticles, navigation }) => {
 export default function Search({ navigation }) {
     const [searchedArticles, setSearchedArticles] = useState([])
     const [loaded, setLoaded] = useState(false)
-
+    const bookmark = useSelector((state) => state.bookmark.value)
+    const dispatch = useDispatch()
+    console.log(bookmark);
 
     return (
-        <View style={{ flex: 1, backgroundColor: themeStyle.BACKGROUND_COLOR, }}>
+        <View style={{ flex: 1, paddingTop:50, backgroundColor: themeStyle.BACKGROUND_COLOR, }}>
             <UserSearchBar searchedArticles={searchedArticles} setSearchedArticles={setSearchedArticles} />
             <SearchedList navigation={navigation} searchedArticles={searchedArticles} />
 
@@ -186,7 +189,6 @@ const styles = StyleSheet.create({
         fontSize: theme.FONT_SIZE_TITLE,
         fontWeight: theme.FONT_WEIGHT_HEAVY,
         color: 'white',
-        marginTop: 50,
         marginHorizontal: 20,
 
     },

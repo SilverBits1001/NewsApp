@@ -5,8 +5,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Icon } from 'react-native-elements';
 import OpenArticle from './components/OpenArticle';
+import { store } from './src/app/store'
+import { Provider } from 'react-redux'
 
-
+import Bookmarked from './components/Bookmarked';
 import theme from './styles/theme.style';
 import Home from './components/Home';
 import themeStyle from './styles/theme.style';
@@ -40,20 +42,23 @@ function MyTabs() {
         tabBarInactiveTintColor: theme.SECONDARY_COLOR,
         headerShown: false,
         tabBarStyle: {
+          
           backgroundColor: theme.TAB_BAR_BACKGROUND_COLOR,
           borderTopColor: 'transparent',
           position: 'absolute',
           height: 100,
-          paddingBottom:55,
+          paddingBottom: 55,
           paddingTop: 5,
           bottom: -50
         },
 
       })}
     >
-     {/*   <Tab.Screen name="Trending" component={Home} />  */}
-      <Tab.Screen name="Explore" component={Search} />
-      <Tab.Screen name="Bookmarked" component={Search} />
+         <Tab.Screen name="Trending" component={Home} />  
+     <Tab.Screen name="Explore" component={Search} />
+      <Tab.Screen name="Bookmarked" component={Bookmarked} />
+ 
+
     </Tab.Navigator>
   )
 }
@@ -61,32 +66,34 @@ function MyTabs() {
 
 export default function App() {
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRoute='Home'
-          screenOptions={{
-            headerShown: false,
-            backgroundColor: 'green',
-            headerStyle: {
-              backgroundColor: themeStyle.HEADER_BACKGROUND_COLOR,
+    <Provider store={store}>
+      <SafeAreaView style={styles.container}>
+        <StatusBar style='inverted' />
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRoute='Home'
+            screenOptions={{
+              headerShown: false,
+              backgroundColor: 'green',
+              headerStyle: {
+                backgroundColor: themeStyle.HEADER_BACKGROUND_COLOR,
 
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              padding: 150
-            },
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+                padding: 150
+              },
 
-          }}>
-          <Stack.Screen name='Home' component={MyTabs} />
-          <Stack.Screen name='Article' component={OpenArticle} options={{
-            headerShown: true
-          }} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </SafeAreaView>
+            }}>
+            <Stack.Screen name='Home' component={MyTabs} />
+            <Stack.Screen name='Article' component={OpenArticle} options={{
+              headerShown: true
+            }} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SafeAreaView>
+    </Provider>
   );
 }
 
@@ -97,4 +104,5 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
     elevation: 0
   },
+  
 });
