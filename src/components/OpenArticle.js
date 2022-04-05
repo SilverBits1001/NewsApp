@@ -4,6 +4,7 @@ import { WebView } from 'react-native-webview';
 
 export default function OpenArticle({ route, navigation }) {
     const { article } = route.params;
+    
 console.log(article);
     return (
         <WebView

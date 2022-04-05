@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from 'react-native'
 export default function FetchApi() {
     const [topArticles, setTopArticles] = useState({})
     const [loaded, setLoaded] = useState(false)
-    const APIKey = '60c77ffbffaf4bf28f68800ef8c70d36'
+    const APIKey = ''
     const ApiUrl = 'https://newsapi.org/v2/top-headlines'
 
     const axios = require('axios');

@@ -4,15 +4,15 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Icon } from 'react-native-elements';
-import OpenArticle from './components/OpenArticle';
+import OpenArticle from './src/components/OpenArticle';
 import { store } from './src/app/store'
 import { Provider } from 'react-redux'
-import Bookmarked from './components/Bookmarked';
+import Bookmarked from './src/components/Bookmarked';
 import theme from './styles/theme.style';
-import Home from './components/Home';
+import Home from './src/components/Home';
 import themeStyle from './styles/theme.style';
-import Search from './components/Search';
-// import SwipeableTest from './components/SwipeableTest'
+import Search from './src/components/Search';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();

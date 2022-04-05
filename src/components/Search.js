@@ -1,15 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Platform, Share, UIManager } from 'react-native'
-import { Icon, Button, Card } from 'react-native-elements'
+import { Button, Card } from 'react-native-elements'
+import Ionicons from '@expo/vector-icons/Ionicons';
 // import Swipeable from 'react-native-gesture-handler/Swipeable';
 
-import theme from '../styles/theme.style'
+import theme from '../../styles/theme.style'
 import TopStories from './TopStories'
-import themeStyle from '../styles/theme.style'
+import themeStyle from '../../styles/theme.style'
 import { LayoutAnimation } from 'react-native'
 import RenderListItem from './RenderListItem'
 import { useDispatch, useSelector } from 'react-redux'
-import { add } from '../src/bookmarked/bookmarkedSlice'
+import { add } from '../bookmarked/bookmarkedSlice'
 
 
 
@@ -45,7 +46,7 @@ const UserSearchBar = ({ setSearchedArticles, searchedArticles, }) => {
     const [visible, setVisible] = useState(true)
     const [loaded, setLoaded] = useState(false)
 
-    const APIKey = '60c77ffbffaf4bf28f68800ef8c70d36'
+    const APIKey = ''
     const ApiUrl = 'https://newsapi.org/v2/everything'
     const axios = require('axios');
 
@@ -79,7 +80,7 @@ const UserSearchBar = ({ setSearchedArticles, searchedArticles, }) => {
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
 
                 <View style={styles.searchBar}>
-                    <Icon
+                    <Ionicons
                         name='search-outline'
                         type='ionicon'
                         color='grey'
