@@ -23,7 +23,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#fff"
-      }
+      },
+      "package": "com.coreycoleman1339.NewsApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
