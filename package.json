@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo-google-fonts/montserrat": "^0.2.2",
     "@react-navigation/bottom-tabs": "^6.2.0",
     "@react-navigation/drawer": "^6.3.1",
     "@react-navigation/native": "^6.0.8",
@@ -16,6 +17,7 @@
     "@reduxjs/toolkit": "^1.8.0",
     "axios": "^0.25.0",
     "expo": "^44.0.6",
+    "expo-font": "~10.0.4",
     "expo-haptics": "~11.1.0",
     "expo-linear-gradient": "^11.0.3",
     "expo-status-bar": "~1.2.0",

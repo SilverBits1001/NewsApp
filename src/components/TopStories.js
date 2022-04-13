@@ -4,7 +4,7 @@ import { ActivityIndicator, FlatList, LogBox, ScrollView, Share, StyleSheet, Tex
 import { Card } from 'react-native-elements'
 import { LinearGradient } from 'expo-linear-gradient';
 import { Linking } from 'react-native';
-import theme from '../styles/theme.style'
+import theme from '../../styles/theme.style'
 import * as Haptics from 'expo-haptics';
 
 
@@ -45,6 +45,9 @@ const RenderFirstTopStory = ({ navigation, articles, openURL }) => {
 
     return (
         <TouchableOpacity
+        onPress={() => navigation.navigate('Article', {
+            article: articles[0].url
+        })}
             onLongPress={() => {
                 shareArticle(articles[0])
                 Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy)
@@ -166,7 +169,7 @@ export default function TopStories({ navigation }) {
     const [topScienceArticles, setTopScienceArticles] = useState({})
 
     const [loaded, setLoaded] = useState(false)
-    const APIKey = '60c77ffbffaf4bf28f68800ef8c70d36'
+    const APIKey = ''
 
     const ApiUrl = 'https://newsapi.org/v2/top-headlines'
     const axios = require('axios');

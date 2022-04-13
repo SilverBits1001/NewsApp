@@ -1,12 +1,13 @@
 import React, { useEffect, useState, useRef, } from 'react'
 import { Animated, ActivityIndicator, FlatList, Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Platform, Share, UIManager, Vibration, LayoutAnimation } from 'react-native'
-import { Icon, Button, Card } from 'react-native-elements'
+import { Button, Card } from 'react-native-elements'
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import themeStyle from '../styles/theme.style'
+import themeStyle from '../../styles/theme.style'
 import * as Haptics from 'expo-haptics';
-import { add, remove } from '../src/bookmarked/bookmarkedSlice'
+import { add, remove } from '../bookmarked/bookmarkedSlice'
 import { useDispatch, useSelector } from 'react-redux';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 
 
@@ -75,12 +76,12 @@ const OpenPanelIcon = ({ iconFill, icon }) => {
 
     if (iconFill) {
         return (
-            <Icon style={styles.actionText} type='ionicon' name={icon} size={30} color={themeStyle.PRIMARY_COLOR} />
+            <Ionicons style={styles.actionText} type='ionicon' name={icon} size={30} color={themeStyle.PRIMARY_COLOR} />
 
         )
     }
     return (
-        <Icon style={styles.actionText} type='ionicon' name={`${icon}-outline`} size={30} color={themeStyle.PRIMARY_COLOR} />
+        <Ionicons style={styles.actionText} type='ionicon' name={`${icon}-outline`} size={30} color={themeStyle.PRIMARY_COLOR} />
 
     )
 }

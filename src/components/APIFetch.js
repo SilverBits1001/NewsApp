@@ -15,7 +15,7 @@ export default function APIFetch() {
 
     async function articleHighlights() {
         try {
-            const response = await axios.get('https://newsapi.org/v2/top-headlines?country=us&apiKey=60c77ffbffaf4bf28f68800ef8c70d36', {
+            const response = await axios.get('https://newsapi.org/v2/top-headlines?country=us&apiKey=', {
                 params: { lang: 'en', page: '1', page_size: '25', },
                 headers: {
                     'x-api-key': APIKey

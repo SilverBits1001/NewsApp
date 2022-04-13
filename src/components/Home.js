@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native'
-import theme from '../styles/theme.style'
+import theme from '../../styles/theme.style'
 import TopStories from './TopStories'
-import themeStyle from '../styles/theme.style'
+import themeStyle from '../../styles/theme.style'
 
 
 
@@ -31,6 +31,7 @@ export default function Home({ navigation }) {
                 onRefresh={onRefresh} />}
             style={{ backgroundColor: theme.BACKGROUND_COLOR }}>
             <Text style={styles.title}>Browse News</Text>
+           
             <Text style={styles.secondaryTitle}>
                 {monthNames[date.getMonth()]} {date.getDate()}
             </Text>
@@ -48,6 +49,7 @@ const styles = StyleSheet.create({
         color: 'white',
         marginTop: 50,
         marginHorizontal: 20,
+        
 
     },
     secondaryTitle: {
